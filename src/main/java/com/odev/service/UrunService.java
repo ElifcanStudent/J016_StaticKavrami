@@ -5,12 +5,12 @@ import com.odev.repository.UrunDeposu;
 
 public class UrunService {
     /**
-     * * Ürün Ekleme
-     *          * Ürün Listeleme
-     *          * Ürün Arama
-     *          * Stoğu Azalan Ürünler
-     *          * Ürün Satış(ürün seçilir satılan adet girilir ve stoktan düşülür.)
-     *          * Ürün Giriş(ürün  adedi girilerek stokta artış yapmak.)
+     * Ürün Ekleme
+     * Ürün Listeleme
+     * Ürün Arama
+     * Stoğu Azalan Ürünler
+     * Ürün Satış(ürün seçilir satılan adet girilir ve stoktan düşülür.)
+     * Ürün Giriş(ürün  adedi girilerek stokta artış yapmak.)
      */
 
     public void urunEkleme(String ad, String marka, String model, int stok){
@@ -25,6 +25,7 @@ public class UrunService {
     } // end method urunEkleme
 
     public void urunListele(){
+
         System.out.println("""
                 
                 ********* Urun Listesi *********
@@ -36,14 +37,14 @@ public class UrunService {
             System.out.println("Urun markası : " + urn.marka);
             System.out.println("Urun model : " + urn.model);
             System.out.println("Urun stok : " + urn.stok);
-
         }
      } // end method urunListele
 
     public void urunBul(String ad) {
+
         for (int i = 0; i < UrunDeposu.sayac; i++) {
             Urun urn = UrunDeposu.urunListesi[i];
-            if (urn.ad.toLowerCase().contains(ad.toLowerCase())) {
+            if (urn.ad.toLowerCase().contains(ad.toLowerCase()) || urn.marka.toLowerCase().contains(ad.toLowerCase()) || urn.model.toLowerCase().contains(ad.toLowerCase())) {
                 System.out.println("Urun Sıra No : " + urn.siraNo);
                 System.out.println("Urun Ad : " + urn.ad);
                 System.out.println("Urun markası : " + urn.marka);
@@ -57,19 +58,40 @@ public class UrunService {
     } // end method urunBul
 
     public void urunSatis(int siraNo, int adet){
-        UrunDeposu.urunListesi[siraNo-1].stok -= adet;
-    }
+
+        if( adet > UrunDeposu.urunListesi[siraNo-1].stok){
+            System.out.println("Yeterli sayıda ürün yoktur.");
+        }
+        else
+            UrunDeposu.urunListesi[siraNo-1].stok -= adet;
+    } // end method urunSatis
+
     public void urunGiris(int siraNo, int adet){
+
         UrunDeposu.urunListesi[siraNo-1].stok += adet;
-    }
+    } // end method urunGiris
+
     public void stokAzalan (){
+
         for (int i = 0; i < UrunDeposu.sayac; i++) {
             if (UrunDeposu.urunListesi[i].stok <= 5) {
                 System.out.println(UrunDeposu.urunListesi[i].ad + "ürünü azaldı.");
                 System.out.println("Stok sayısı : " + UrunDeposu.urunListesi[i].stok);
             }
+            else
+                System.out.println("Kritik stokta bir ürün yoktur.");
         }
+
+
     } // end method stokAzalan
 
+    public boolean varMi(){
+        boolean var = true;
+        if (UrunDeposu.sayac == 0){
+            System.out.println("Lütfen önce ürün ekleyiniz!");
+            return false;
+        }return var;
+    } // end method varMi
 
-}
+
+} // end class
