@@ -113,7 +113,11 @@ public class UrunController {
         int siraNo = new Scanner(System.in).nextInt();
         System.out.println("Lütfen girilecek miktarı giriniz : ");
         int adet = new Scanner(System.in).nextInt();
-        urunService.urunGiris(siraNo,adet);
+        if (UrunDeposu.urunListesi[siraNo-1] == null){
+            System.out.println("Bu sıra numarsına ait ürün bulunmamaktadır.");
+        }
+        else
+            urunService.urunGiris(siraNo,adet);
     } // end method urunGiris
 
 }
